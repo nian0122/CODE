@@ -1,0 +1,1 @@
+{"name":"Local: P1101","url":"e:\\CODE\\code\\learn\\LUOGU\\P1101.cpp","tests":[{"id":1709997681387,"input":"4\n1 2 3 100","output":"94"},{"id":1710051218940,"input":"6\n1 3 5 7 8 9","output":"1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\code\\learn\\LUOGU\\P1101.cpp","group":"local","local":true}

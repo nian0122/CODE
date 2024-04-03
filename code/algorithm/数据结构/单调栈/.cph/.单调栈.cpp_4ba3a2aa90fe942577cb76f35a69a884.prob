@@ -1,0 +1,1 @@
+{"name":"Local: 单调栈","url":"e:\\CODE\\code\\algorithm\\数据结构\\单调栈\\单调栈.cpp","tests":[{"id":1693570758266,"input":"4 \n3 0 -1 -2","output":""},{"id":1697360984881,"input":"4\n1 2 3 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\code\\algorithm\\数据结构\\单调栈\\单调栈.cpp","group":"local","local":true}

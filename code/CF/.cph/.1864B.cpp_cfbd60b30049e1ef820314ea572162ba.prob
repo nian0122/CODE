@@ -1,0 +1,1 @@
+{"name":"Local: 1864B","url":"e:\\CODE\\code\\CF\\1864B.cpp","tests":[{"id":1696447616359,"input":"5\n4 2\nnima\n5 3\npanda\n9 2\ntheforces\n7 3\namirfar\n6 4\nrounds","output":"aimn\naandp\nceefhorst\naafmirr\ndnorsu"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\code\\CF\\1864B.cpp","group":"local","local":true}
