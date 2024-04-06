@@ -1,27 +1,19 @@
 #include<bits/stdc++.h>
 using namespace std;
 const int N = 210;
-int n, a, b, ans = 0;
+int n, a, b, ans = INT32_MAX;
 vector<int> ve(N);
 int flage[N];
-void dfs(int a, int b, int ans){
-    if(a == b){
-        cout << ans;
+void dfs(int a, int b, int sum){
+    if(a < 1 || a > n || flage[a]){
         return;
     }
-    //    cout << flage[5] << " " << 5 << endl;
-    if(a - ve[a] > 0 && !flage[a - ve[a]]){
-        
-        // cout << flage[a - ve[a]] << " " << a - ve[a] << endl;
-        flage[a - ve[a]] = 1;
-        return dfs(a - ve[a], b, ans+1);
+    if(a == b){
+        ans = sum;
+        return;
     }
-    if(a + ve[a] <= n && !flage[a + ve[a]]){
-        
-        // cout << flage[a + ve[a]] << " " << a + ve[a] <<endl;
-        flage[a + ve[a]] = 1;
-        return dfs(a + ve[a], b, ans+1);
-    }
+    return dfs(a - ve[a], b, sum+1);
+    return dfs(a + ve[a], b, sum+1);
 }
 int main(){
     cin  >> n >> a >> b;
@@ -31,5 +23,10 @@ int main(){
     for(int i = 1; i <= n; i++){
         cin >> ve[i];
     }
-    dfs(a,b,ans);
+    dfs(a,b,0);
+    if(ans == INT32_MAX){
+        cout << -1;
+    }else{
+        cout << ans;
+    }
 }
