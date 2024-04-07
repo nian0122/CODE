@@ -1,5 +1,5 @@
 # git push步骤
-_ _ _ git status查看本地代码状态 _ _ _
+--- git status查看本地代码状态 ---
 * 1.git add添加需要commit的文件
 * 2.git commit -m对本次提交进行描述
 * 3.git remote add origin git@github.com:nian0122/CODE.git添加远程仓库命名为origin
