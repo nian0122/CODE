@@ -1,1 +1,1 @@
-{"name":"Local: f","url":"e:\\CODE\\random\\f.cpp","tests":[{"id":1702118742756,"input":"5 1 5\n3 3 1 2 5","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\random\\f.cpp","group":"local","local":true}
+{"name":"Local: f","url":"e:\\CODE\\random\\f.cpp","tests":[{"id":1702118742756,"input":"5 1\n2 2 3 3","output":"YES\nNO"},{"id":1712487405859,"input":"3 2\n1 2 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\random\\f.cpp","group":"local","local":true}

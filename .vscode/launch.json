@@ -1,0 +1,138 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        
+
+        {
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "externalTerminal"
+        },
+        {
+            "type": "java",
+            "name": "a",
+            "request": "launch",
+            "mainClass": "a",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "TestForwhile",
+            "request": "launch",
+            "mainClass": "TestForwhile",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "TestSwitch",
+            "request": "launch",
+            "mainClass": "TestSwitch",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "Testlf",
+            "request": "launch",
+            "mainClass": "Testlf",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "TestString",
+            "request": "launch",
+            "mainClass": "TestString",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "TestNumber",
+            "request": "launch",
+            "mainClass": "TestNumber",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "TestDate",
+            "request": "launch",
+            "mainClass": "TestDate",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "type": "java",
+            "name": "Hello",
+            "request": "launch",
+            "mainClass": "Hello",
+            "projectName": "CODE_a7bd0327"
+        },
+        {
+            "name": "Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "internalConsoleOptions": "neverOpen",
+            "MIMode": "gdb",
+            "miDebuggerPath": "E:\\Software\\msys64\\ucrt64\\bin\\gdb.exe",
+            "preLaunchTask": "build"
+        },
+        {
+            "name": "C/C++: cpp.exe 生成和调试活动文件",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "E:\\Software\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "将反汇编风格设置为 Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: cpp.exe 生成活动文件"
+        },
+        {
+            "name": "C/C++: g++.exe 生成和调试活动文件",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "E:\\Software\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "将反汇编风格设置为 Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++.exe 生成活动文件"
+        }
+    ]
+}

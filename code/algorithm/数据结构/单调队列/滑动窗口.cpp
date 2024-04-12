@@ -17,7 +17,7 @@ int main(){
         if(hh<=tt&&q[hh]<i-k+1)hh++;
         while(hh<=tt&&a[q[tt]]>=a[i])tt--;
         q[++tt]=i;
-        if(i>=k-1)cout<<a[q[hh]]<<" ";
+        if(i>=k-1)cout<<a[q[hh]] <<" " << a[q[tt]] << endl;
     }
     cout<<endl;
 

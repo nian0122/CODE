@@ -43,4 +43,4 @@ def my_context_processor():
     return {"user":g.user}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port= 5006, debug=True)

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>录音示例</title>
+</head>
+<body>
+    <button id="start">开始录音</button>
+    <button id="stop">结束录音</button>
+
+    <script>
+        var chunks = [];
+        var mediaRecorder;
+
+        navigator.mediaDevices.getUserMedia({audio: true})
+            .then(function(stream) {
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = function(e) {
+                    chunks.push(e.data);
+                };
+
+                document.getElementById('start').addEventListener('click', function() {
+                    chunks = [];
+                    mediaRecorder.start();
+                });
+
+                document.getElementById('stop').addEventListener('click', function() {
+                    mediaRecorder.stop();
+                });
+
+                mediaRecorder.onstop = function() {
+                    var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+                    var audioUrl = URL.createObjectURL(blob);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.onload = function(e) {
+                        if (this.readyState === 4) {
+                            console.log('上传成功');
+                        }
+                    };
+                    xhr.open('POST', '/save_recording');
+                    xhr.send(blob);
+                };
+            })
+            .catch(function(err) {
+                console.log('获取麦克风权限失败：', err);
+            });
+    </script>
+</body>
+</html>
