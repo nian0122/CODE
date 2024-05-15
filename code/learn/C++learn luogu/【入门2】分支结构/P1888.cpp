@@ -5,11 +5,14 @@
 #include<iomanip>
 using namespace std;
 int p[4];
-//Å·¼¸ÀïµÃËã·¨£¨Õ·×ªÏà³ý·¨£©Çó¹«ÒòÊý
+//Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½Õ·×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int gcd(int a,int b){
     return b ? gcd(b, a % b) : a;
     // if(b==0)return a;
     // return gcd(b,a%b);
+}
+int lcm(int a,int b){
+    return a/gcd(a,b)*b;
 }
 int main(){
     cin>>p[1]>>p[2]>>p[3];

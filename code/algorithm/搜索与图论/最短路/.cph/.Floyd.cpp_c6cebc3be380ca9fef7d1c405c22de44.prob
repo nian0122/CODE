@@ -1,0 +1,1 @@
+{"name":"Local: Floyd","url":"e:\\CODE\\code\\algorithm\\搜索与图论\\最短路\\Floyd.cpp","tests":[{"id":1715744355151,"input":"4 4\n1 2 1\n2 3 1\n3 4 1\n4 1 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CODE\\code\\algorithm\\搜索与图论\\最短路\\Floyd.cpp","group":"local","local":true}
