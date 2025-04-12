@@ -1,2 +1,0 @@
-reqire
-console.log('hhhhhhaesadagrgarsegfwsefhh')

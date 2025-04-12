@@ -1,6 +1,0 @@
-{
-  "module": "common",
-  "dependencies": {
-    "lodash": "^4.17.21"
-  }
-}
