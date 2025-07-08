@@ -5,3 +5,6 @@ DataAnalyze/.ipynb_checkpoints/exeam-checkpoint.ipynb
 DataAnalyze/rand.py
 .vscode
 .fitten
+
+# Ignore all .exe files in output directories
+*/output/*.exe
