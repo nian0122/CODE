@@ -8,3 +8,4 @@ DataAnalyze/rand.py
 
 # Ignore all .exe files in output directories
 */output/*.exe
+*.exe
