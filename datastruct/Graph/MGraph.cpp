@@ -86,10 +86,33 @@ void BFS(MGraph G, int v) {
     }
 }
 
+
+// 初始化复杂测试图(完全图)
+void initComplexGraph(MGraph &G) {
+    // 5个顶点的完全图
+    G.vexnum = 5;
+    G.arcnum = 10;
+    
+    // 顶点信息
+    G.vex[0] = 'A';
+    G.vex[1] = 'B';
+    G.vex[2] = 'C';
+    G.vex[3] = 'D';
+    G.vex[4] = 'E';
+    
+    // 初始化邻接矩阵
+    for (int i = 0; i < G.vexnum; i++) {
+        for (int j = 0; j < G.vexnum; j++) {
+            G.edge[i][j] = (i == j) ? 0 : 1; // 完全图，除对角线外全为1
+        }
+    }
+}
+
 // 测试用例
 int main() {
     MGraph G;
-    CreateMGraph(G);
+    initComplexGraph(G);
+
     
     // 初始化访问数组
     for (int i = 0; i < G.vexnum; i++) {
