@@ -1,8 +1,12 @@
 /**
  * 图的邻接矩阵实现
- * 功能：实现图的邻接矩阵存储及DFS/BFS遍历
+ * 功能：实现图的邻接矩阵存储，支持顶点和边的增删改操作
+ * 适用于稠密图 有向图 无向图
  * 时间复杂度：
  *   - 创建：O(n^2)
+ *   - 添加顶点：O(n)
+ *   - 删除顶点：O(n^2)
+ *   - 添加/删除/修改边：O(1)
  *   - DFS/BFS：O(n^2)
  * 空间复杂度：O(n^2)
  */
@@ -22,115 +26,117 @@ typedef struct {
     int vexnum, arcnum;                   // 顶点数和边数
 } MGraph;
 
-// 创建邻接矩阵图
-void CreateMGraph(MGraph &G) {
-    cout << "输入顶点数和边数:";
-    cin >> G.vexnum >> G.arcnum;
+/**
+ * 添加顶点
+ * @param G 图引用
+ * @param data 顶点数据
+ * @return 添加成功返回顶点位置，失败返回-1
+ * 时间复杂度: O(n)
+ */
+int AddVertex(MGraph &G, VertextType data) {
+    if (G.vexnum >= MaxVertexNum) return -1;
+    G.vex[G.vexnum] = data;
     
-    // 输入顶点信息
-    cout << "输入顶点信息:";
-    for (int i = 0; i < G.vexnum; i++) {
-        cin >> G.vex[i];
+    // 初始化新顶点的边
+    for (int i = 0; i <= G.vexnum; i++) {
+        G.edge[G.vexnum][i] = 0;
+        G.edge[i][G.vexnum] = 0;
     }
     
-    // 初始化邻接矩阵
+    return G.vexnum++;
+}
+
+/**
+ * 删除顶点
+ * @param G 图引用
+ * @param v 顶点位置
+ * @return 删除成功返回true，失败返回false
+ * 时间复杂度: O(n^2)
+ */
+bool RemoveVertex(MGraph &G, int v) {
+    if (v < 0 || v >= G.vexnum) return false;
+    
+    // 统计要删除的边数
+    int edgeCount = 0;
     for (int i = 0; i < G.vexnum; i++) {
+        if (G.edge[v][i] != 0) edgeCount++;
+        if (G.edge[i][v] != 0 && i != v) edgeCount++;
+    }
+    
+    // 移动顶点
+    for (int i = v; i < G.vexnum - 1; i++) {
+        G.vex[i] = G.vex[i + 1];
+    }
+    
+    // 移动边
+    for (int i = 0; i < G.vexnum; i++) {
+        for (int j = v; j < G.vexnum - 1; j++) {
+            G.edge[i][j] = G.edge[i][j + 1];
+        }
+    }
+    for (int i = v; i < G.vexnum - 1; i++) {
         for (int j = 0; j < G.vexnum; j++) {
-            G.edge[i][j] = 0;
+            G.edge[i][j] = G.edge[i + 1][j];
         }
     }
     
-    // 输入边信息
-    cout << "输入边信息(格式：顶点1 顶点2 权值):" << endl;
-    for (int k = 0; k < G.arcnum; k++) {
-        int i, j, w;
-        cin >> i >> j >> w;
-        G.edge[i][j] = w;
-        G.edge[j][i] = w; // 无向图
-    }
+    G.vexnum--;
+    G.arcnum -= edgeCount;
+    return true;
 }
 
-// 访问顶点
-void visit(MGraph G, int v) {
-    cout << G.vex[v] << " ";
+/**
+ * 添加边
+ * @param G 图引用
+ * @param v1 起点
+ * @param v2 终点
+ * @param w 权值
+ * @return 添加成功返回true，失败返回false
+ * 时间复杂度: O(1)
+ */
+bool AddEdge(MGraph &G, int v1, int v2, int w) {
+    if (v1 < 0 || v1 >= G.vexnum || v2 < 0 || v2 >= G.vexnum)
+        return false;
+    
+    if (G.edge[v1][v2] == 0) G.arcnum++;
+    G.edge[v1][v2] = w;
+    G.edge[v2][v1] = w; // 无向图
+    return true;
 }
 
-// 深度优先搜索(DFS)
-void DFS(MGraph G, int v) {
-    visit(G, v);
-    visited[v] = true;
-    for (int w = 0; w < G.vexnum; w++) {
-        if (G.edge[v][w] != 0 && !visited[w]) {
-            DFS(G, w);
-        }
-    }
+/**
+ * 删除边
+ * @param G 图引用
+ * @param v1 起点
+ * @param v2 终点
+ * @return 删除成功返回true，失败返回false
+ * 时间复杂度: O(1)
+ */
+bool RemoveEdge(MGraph &G, int v1, int v2) {
+    if (v1 < 0 || v1 >= G.vexnum || v2 < 0 || v2 >= G.vexnum)
+        return false;
+    
+    if (G.edge[v1][v2] != 0) G.arcnum--;
+    G.edge[v1][v2] = 0;
+    G.edge[v2][v1] = 0; // 无向图
+    return true;
 }
 
-// 广度优先搜索(BFS)
-void BFS(MGraph G, int v) {
-    queue<int> Q;
-    visit(G, v);
-    visited[v] = true;
-    Q.push(v);
+/**
+ * 修改边权值
+ * @param G 图引用
+ * @param v1 起点
+ * @param v2 终点
+ * @param w 新权值
+ * @return 修改成功返回true，失败返回false
+ * 时间复杂度: O(1)
+ */
+bool UpdateEdge(MGraph &G, int v1, int v2, int w) {
+    if (v1 < 0 || v1 >= G.vexnum || v2 < 0 || v2 >= G.vexnum)
+        return false;
     
-    while (!Q.empty()) {
-        int u = Q.front();
-        Q.pop();
-    for (int w = 0; w < G.vexnum; w++) {
-        if (G.edge[u][w] != 0 && !visited[w]) {
-                visit(G, w);
-                visited[w] = true;
-                Q.push(w);
-            }
-        }
-    }
+    G.edge[v1][v2] = w;
+    G.edge[v2][v1] = w; // 无向图
+    return true;
 }
 
-
-// 初始化复杂测试图(完全图)
-void initComplexGraph(MGraph &G) {
-    // 5个顶点的完全图
-    G.vexnum = 5;
-    G.arcnum = 10;
-    
-    // 顶点信息
-    G.vex[0] = 'A';
-    G.vex[1] = 'B';
-    G.vex[2] = 'C';
-    G.vex[3] = 'D';
-    G.vex[4] = 'E';
-    
-    // 初始化邻接矩阵
-    for (int i = 0; i < G.vexnum; i++) {
-        for (int j = 0; j < G.vexnum; j++) {
-            G.edge[i][j] = (i == j) ? 0 : 1; // 完全图，除对角线外全为1
-        }
-    }
-}
-
-// 测试用例
-int main() {
-    MGraph G;
-    initComplexGraph(G);
-
-    
-    // 初始化访问数组
-    for (int i = 0; i < G.vexnum; i++) {
-        visited[i] = false;
-    }
-    
-    cout << "DFS遍历结果:";
-    DFS(G, 0);
-    cout << endl;
-    
-    // 重置访问数组
-    for (int i = 0; i < G.vexnum; i++) {
-        visited[i] = false;
-    }
-    
-    cout << "BFS遍历结果:";
-    BFS(G, 0);
-    cout << endl;
-    
-    return 0;
-}

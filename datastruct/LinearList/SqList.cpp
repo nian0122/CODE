@@ -1,47 +1,99 @@
+/**
+ * 顺序表实现文件
+ * 实现顺序表的基本操作：初始化、插入、删除、查找等
+ * 采用动态分配内存方式，支持自动扩容
+ */
+
 #include <malloc.h>
 #include <stdio.h>
-#define InitSize 100
-#define ElemType int
+
+#define InitSize 100  // 顺序表初始容量
+#define ElemType int  // 顺序表元素类型
+
+/**
+ * 顺序表结构体
+ * data: 指向存储元素的数组指针
+ * length: 当前顺序表长度
+ * maxsize: 顺序表最大容量
+ */
 typedef struct{
-    ElemType* data;
-    int length;
-    int maxsize;
+    ElemType* data;  // 存储数组基地址
+    int length;      // 当前长度
+    int maxsize;     // 最大容量
 }SqList;
 
+/**
+ * 初始化顺序表
+ * @param L 顺序表引用
+ * 时间复杂度: O(1)
+ */
 void InitList(SqList &L){
-    L.data = (ElemType *)malloc(InitSize*sizeof(ElemType));
-    L.length = 0;
-    L.maxsize = InitSize;
+    L.data = (ElemType *)malloc(InitSize*sizeof(ElemType));  // 分配初始内存
+    L.length = 0;       // 初始长度为0
+    L.maxsize = InitSize; // 设置最大容量
 }
 
+/**
+ * 在顺序表指定位置插入元素
+ * @param L 顺序表引用
+ * @param i 插入位置(1-based)
+ * @param e 待插入元素
+ * @return 插入成功返回true，失败返回false
+ * 时间复杂度: O(n)
+ */
 bool ListInsert(SqList &L, int i, ElemType e){
+    // 检查位置合法性
     if(i < 1 || i > L.length+1)
         return false;
+    // 检查表是否已满
     if(L.length >= L.maxsize)
         return false;
+    
+    // 从后向前移动元素，为新元素腾出位置
     for(int j=L.length; j >= i; j--)
         L.data[j] = L.data[j-1];
-    L.data[i-1] = e;
-    L.length++;
+    
+    L.data[i-1] = e;  // 插入新元素
+    L.length++;       // 长度增加
     return true;
 }
 
+/**
+ * 删除顺序表指定位置的元素
+ * @param L 顺序表引用
+ * @param i 删除位置(1-based)
+ * @param e 用于返回被删除的元素
+ * @return 删除成功返回true，失败返回false
+ * 时间复杂度: O(n)
+ */
 bool ListDelete(SqList &L, int i, ElemType &e){
+    // 检查位置合法性
     if(i < 1 || i > L.length)
         return false;
-    e = L.data[i-1];
+    
+    e = L.data[i-1];  // 保存被删除元素
+    
+    // 从前向后移动元素，覆盖被删除元素
     for(int j = i; j < L.length; j++)
-    L.data[j-1] = L.data[j];
-    L.length--;
+        L.data[j-1] = L.data[j];
+    
+    L.length--;  // 长度减少
     return true;
 }
 
+/**
+ * 查找元素在顺序表中的位置
+ * @param L 顺序表引用
+ * @param e 待查找元素
+ * @return 找到返回位置(1-based)，未找到返回0
+ * 时间复杂度: O(n)
+ */
 int LocateElem(SqList &L, ElemType e){
-    int i;
-    for(i=0; i < L.length; i++)
+    // 顺序查找
+    for(int i=0; i < L.length; i++)
         if(L.data[i] == e)
-            return i+1;
-    return 0;
+            return i+1;  // 返回1-based位置
+    return 0;  // 未找到
 }
 
 int main() {
