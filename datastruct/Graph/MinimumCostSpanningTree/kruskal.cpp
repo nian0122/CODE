@@ -70,14 +70,22 @@ int edge_compare(const void* a, const void* b) {
     return ((Edge*)a)->w - ((Edge*)b)->w;
 }
 
+// 最小生成树结果结构体
+typedef struct {
+    Edge edges[MAX_VERTEX_NUM - 1]; // 最小生成树的边
+    int count;                      // 选中的边数
+} MSTResult;
+
 /**
  * Kruskal算法实现
  * @param graph 图结构
  * @param edges 边集数组
  * @param edge_count 边数量
+ * @param result 存储最小生成树结果
+ * @return 成功返回1，失败返回0
  * 时间复杂度: O(E log E + E α(V))
  */
-void kruskal_mst(MGraph graph, Edge edges[], int edge_count) {
+int kruskal_mst(MGraph graph, Edge edges[], int edge_count, MSTResult *result) {
     // 初始化并查集
     for (int i = 0; i < graph.vexnum; i++) {
         parent[i] = i;
@@ -86,17 +94,17 @@ void kruskal_mst(MGraph graph, Edge edges[], int edge_count) {
     // 对边按权值排序
     qsort(edges, edge_count, sizeof(Edge), edge_compare);
 
-    int selected_edges = 0;
-    printf("Kruskal算法生成的最小生成树:\n");
-    printf("边 \t权重\n");
+    result->count = 0;
 
     // 遍历所有边
-    for (int i = 0; i < edge_count && selected_edges < graph.vexnum - 1; i++) {
+    for (int i = 0; i < edge_count && result->count < graph.vexnum - 1; i++) {
         if (union_set(edges[i].u, edges[i].v)) {
-            printf("%d - %d \t%d \n", edges[i].u, edges[i].v, edges[i].w);
-            selected_edges++;
+            result->edges[result->count] = edges[i];
+            result->count++;
         }
     }
+
+    return result->count == graph.vexnum - 1;
 }
 
 /**
@@ -145,7 +153,19 @@ int main() {
         }
     }
 
-    kruskal_mst(graph, edge_list, edge_count);
+    MSTResult result;
+    if (kruskal_mst(graph, edge_list, edge_count, &result)) {
+        printf("Kruskal算法生成的最小生成树:\n");
+        printf("边 \t权重\n");
+        for (int i = 0; i < result.count; i++) {
+            printf("%d - %d \t%d \n", 
+                   result.edges[i].u, 
+                   result.edges[i].v, 
+                   result.edges[i].w);
+        }
+    } else {
+        printf("无法生成最小生成树\n");
+    }
 
     return 0;
 }

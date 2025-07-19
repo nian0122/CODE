@@ -1,101 +1,97 @@
 /**
- * Dijkstra 最短路径算法实现
- * 使用优先队列优化，计算从源点到所有其他顶点的最短路径
+ * @brief Dijkstra最短路径算法实现
  * 
- * 时间复杂度: O((V+E)logV)
- * 空间复杂度: O(V+E)
+ * 使用邻接矩阵表示图，计算从源点到所有其他顶点的最短路径
+ * 
+ * @param n 图中顶点数量
+ * @param MGraph 图的邻接矩阵表示，MGraph[i][j]表示顶点i到j的边权值
+ * @param v0 源点（起始顶点）的索引
+ * @param dist 输出参数，存储从源点到各顶点的最短距离
+ * @param path 输出参数，存储最短路径的前驱顶点，用于回溯路径
+ * 
+ * @note 时间复杂度: O(n^2)，适合稠密图
+ *       使用INF(INT_MAX)表示两个顶点之间没有直接边
  */
-
 #include <vector>
-#include <queue>
 #include <climits>
 #include <iostream>
 
 using namespace std;
 
-// 定义边的结构体
-struct Edge {
-    int to;     // 目标顶点
-    int weight; // 边权重
-};
+const int INF = INT_MAX;  // 表示无穷大，用于不连通的顶点
 
-// 定义优先队列中使用的节点
-struct QueueNode {
-    int vertex;
-    int distance;
-    
-    // 重载 < 运算符用于优先队列
-    bool operator<(const QueueNode& other) const {
-        return distance > other.distance; // 最小堆
-    }
-};
+void Dijkstra(int n, const vector<vector<int>>& MGraph, int v0, 
+             vector<int>& dist, vector<int>& path) {
+    vector<int> set(n, 0);  // 标记顶点是否已找到最短路径
+    int min, v;  // min: 当前找到的最小距离，v: 当前处理的顶点
 
-/**
- * Dijkstra 算法实现
- * @param graph 图的邻接表表示
- * @param start 源点
- * @return 包含从源点到所有顶点最短距离的数组
- */
-vector<int> dijkstra(const vector<vector<Edge>>& graph, int start) {
-    int n = graph.size();
-    vector<int> dist(n, INT_MAX); // 初始化所有距离为无穷大
-    vector<bool> visited(n, false); // 标记已访问的顶点
-    
-    priority_queue<QueueNode> pq;
-    
-    dist[start] = 0;
-    pq.push({start, 0});
-    
-    while (!pq.empty()) {
-        QueueNode current = pq.top();
-        pq.pop();
-        int u = current.vertex;
-        
-        if (visited[u]) continue;
-        visited[u] = true;
-        
-        // 遍历所有邻接边
-        for (const Edge& edge : graph[u]) {
-            int v = edge.to;
-            int weight = edge.weight;
-            
-            // 松弛操作
-            if (dist[v] > dist[u] + weight) {
-                dist[v] = dist[u] + weight;
-                pq.push({v, dist[v]});
-            }
+    // 初始化阶段：设置源点到各顶点的初始距离
+    for (int i = 0; i < n; ++i) {
+        dist[i] = MGraph[v0][i];  // 初始距离为源点直接到各顶点的距离
+        if (MGraph[v0][i] < INF) {
+            path[i] = v0;  // 如果有直接路径，前驱设为源点
+        } else {
+            path[i] = -1;   // 否则设为-1表示不可达
         }
     }
     
-    return dist;
+    set[v0] = 1;    // 标记源点已处理
+    path[v0] = -1;  // 源点没有前驱顶点
+
+    // 主循环：每次找到一个顶点的最短路径
+    for (int i = 0; i < n-1; ++i) {
+        min = INF;
+        // 步骤1：在未处理的顶点中找到距离源点最近的顶点
+        for (int j = 0; j < n; ++j) {
+            if (set[j] == 0 && dist[j] < min) {
+                v = j;
+                min = dist[j];
+            }
+        }
+        
+        set[v] = 1;  // 标记该顶点已处理
+
+        // 步骤2：通过新找到的顶点更新其他顶点的距离
+        for (int j = 0; j < n; ++j) {
+            if (set[j] == 0 && dist[v] + MGraph[v][j] < dist[j]) {
+                dist[j] = dist[v] + MGraph[v][j];  // 更新最短距离
+                path[j] = v;                       // 更新前驱顶点
+            }
+        }
+    }
 }
 
 /**
- * 测试 Dijkstra 算法
+ * @brief 测试Dijkstra算法
+ * 
+ * 使用一个包含5个顶点的图进行测试，输出各顶点的最短距离和路径
  */
 int main() {
-    // 示例图
-    // 顶点数
-    const int V = 5;
-    // 创建图的邻接表
-    vector<vector<Edge>> graph(V);
+    const int n = 5;
+    // 邻接矩阵表示的图
+    vector<vector<int>> graph = {
+        {0,   10,  INF, 30,  100},  // 顶点0的边
+        {INF, 0,   50,  INF, INF},  // 顶点1的边  
+        {INF, INF, 0,   INF, 10},   // 顶点2的边
+        {INF, INF, 20,  0,   60},   // 顶点3的边
+        {INF, INF, INF, INF, 0}     // 顶点4的边
+    };
     
-    // 添加边
-    graph[0].push_back({1, 4});
-    graph[0].push_back({2, 1});
-    graph[1].push_back({3, 1});
-    graph[2].push_back({1, 2});
-    graph[2].push_back({3, 5});
-    graph[3].push_back({4, 3});
-    
-    // 从顶点 0 开始计算最短路径
-    vector<int> distances = dijkstra(graph, 0);
-    
+    vector<int> dist(n);  // 存储最短距离
+    vector<int> path(n);  // 存储路径前驱
+
+    // 计算从顶点0到所有其他顶点的最短路径
+    Dijkstra(n, graph, 0, dist, path);
+
     // 输出结果
-    cout << "顶点\t距离" << endl;
-    for (int i = 0; i < V; ++i) {
-        cout << i << "\t" << distances[i] << endl;
+    cout << "Dijkstra算法测试结果：" << endl;
+    cout << "顶点\t距离\t路径" << endl;
+    for (int i = 0; i < n; ++i) {
+        cout << i << "\t" 
+             << (dist[i] == INF ? "∞" : to_string(dist[i])) << "\t" 
+             << path[i] << endl;
     }
     
     return 0;
 }
+
